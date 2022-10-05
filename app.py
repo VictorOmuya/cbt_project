@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL, MySQLdb
 import MySQLdb.cursors
 import re
-from random import randint
 import camera
 import sms
 import os
@@ -18,12 +17,6 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = os.environ.get("db")
 
 mysql = MySQL(app)
-
-
-def random_no(n):
-    range_start = 10**(n-1)
-    range_end = (10**n)-1
-    return randint(range_start, range_end)
     
 
 @app.route('/admin', methods = ['GET', 'POST'])
@@ -48,7 +41,22 @@ def admin():
         
     return render_template('admin.html', mess = msg)
 
+@app.route('/delete', methods=['POST', 'GET'])
+def delete():
+    msg = ''
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
+    if request.method == 'POST' and 'number' in request.form:
+        num = request.form['number']
+        cursor.execute(
+                    'DELETE FROM questions WHERE id = %s'%num )
+        mysql.connection.commit()
+        msg = 'Question successfully deleted'
+    elif request.method == 'POST':
+        msg = 'Please enter a valid number!'
+        
+    return render_template('deletequestion.html', mess = msg)
+  
 @app.route('/', methods=['GET', 'POST'])
 def login():
     msg = ''
@@ -68,9 +76,7 @@ def login():
             session['email'] = account['email']
             session['phone_no'] = account['phone_no']
             
-            
-            
-            return redirect(url_for('exam'))
+            return redirect(url_for('face'))
         else:
             msg = 'Incorrect username/password!'
 
@@ -101,10 +107,11 @@ def exam():
     if 'loggedin' in session:
         questions = ''
         score = 0
-            
+       
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM questions')
         questions = cursor.fetchall()
+      
         
         if request.method == 'POST':  
             phone = session['phone_no']
@@ -128,23 +135,6 @@ def exam():
         return render_template('exam.html', username = session['username'], questions = questions)
     return redirect(url_for('login'))
 
-@app.route('/deposit', methods=['POST', 'GET'])
-def deposit():
-    if 'loggedin' in session:
-        return render_template('deposit.html', username=session['username'])
-    return redirect(url_for('login'))
-
-@app.route('/withdraw', methods=['POST', 'GET'])
-def withdraw():
-    if 'loggedin' in session:
-        return render_template('withdraw.html', username=session['username'])
-    return redirect(url_for('login'))
-
-@app.route('/balance', methods=['POST', 'GET'])
-def balance():
-    if 'loggedin' in session:
-        return render_template('balance.html', username=session['username'])
-    return redirect(url_for('login'))
 
 
 @app.route('/exam_success', methods=['POST', 'GET'])

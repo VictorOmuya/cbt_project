@@ -1,37 +1,60 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-    <script src="{{url_for('static', filename='index.js')}}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign In</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/material-icon/css/material-design-iconic-font.min.css') }}">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">   
+  
 </head>
-
 <body>
-    <div class="login">
-        <h1>CBT</h1>
-        <div class="links">
-            <a href="{{ url_for('login') }}" class="active">LOGIN</a>
-            <a href="{{ url_for('register') }}">Register</a>
-        </div>
-        <form action="{{ url_for('login') }}" method="post">
 
-            <label for="username">
-                <i class="fas fa-user"></i>
-            </label>
-            <input type="text" name="username" placeholder="username" id="username" required>
-          
-            <label for="password">
-                <i class="fas fa-lock"></i>
-            </label>
-            <input type="password" name="password" placeholder="password" id="password" required>
+    <div class="main">
+        
+        <!-- Sing in  Form -->
+        <section class="sign-in">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img src="{{url_for('static',filename = 'images/laspo.jpg')}}" alt="sing up image"></figure>
+                        <a href="{{ url_for('register') }}" class="signup-image-link">Create an account</a>
+                    </div>
 
-            <div class="msg">{{ msg }}</div>
-            <input type="submit" value="Continue">
-        </form>
+                    <div class="signin-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <form method="POST" class="register-form" id="login-form" action = "{{ url_for('login') }}">
+                            <div class="form-group">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="username" id="your_name" placeholder="Your Name"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" id="your_pass" placeholder="Password"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+                            </div>
+                        </form>
+                       
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </div>
-</body>
 
+    <!-- JS -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>

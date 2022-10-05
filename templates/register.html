@@ -1,48 +1,68 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Register</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up </title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/material-icon/css/material-design-iconic-font.min.css') }}">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">   
+  
 </head>
-
 <body>
-    <div class="register">
-        <h1>CBT</h1>
-        <div class="links">
-            <a href="{{ url_for('login') }}">Login</a>
-            <a href="{{ url_for('register') }}" class="active">Register</a>
-        </div>
-        <form action="{{ url_for('register') }}" method="post" autocomplete="off" enctype="multipart/form-data">
-            <label for="username">
-                <i class="fas fa-user"></i>
-            </label>
-            <input type="text" name="username" placeholder="Username" id="username" required>
-            <label for="password">
-                <i class="fas fa-lock"></i>
-            </label>
-            <input type="password" name="password" placeholder="Password" id="password" required>
-            <label for="email">
-                <i class="fas fa-envelope"></i>
-            </label>
-            <input type="email" name="email" placeholder="Email" id="email" required>
 
-            <label for="email">
-                <i class="fas fa-phone"></i>
-            </label>
-            <input type="text" name="phone_no" placeholder="Phone no." id="email" maxlength="10" required>
+    <div class="main">
 
-            <div>
-                <p>Upload Image</p>
-                <p><input type="file" name="file" value="upload image"></p>
+        <!-- Sign up form -->
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <form method="POST" class="register-form" id="register-form" action="{{ url_for('register') }}" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="username" id="name" placeholder="Your Username"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" id="email" placeholder="Your Email"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" id="pass" placeholder="Password"/>
+                            </div>
+        
+
+                            <div class="form-group">
+                                <label for="phone no"><i class="zmdi zmdi-phone"></i></label>
+                                <input type="text" name="phone_no" id="email" placeholder="Phone number (ignore country code)"/>
+                            </div>
+                            
+
+                            <div>
+                                <p>Upload Image</p>
+                                <p><input type="file" name="file" value="upload image"></p>
+                                </div>
+                
+                            <div class="msg" style="font-size: 10px; color: green;">{{ msg }}</div>
+
+                            <div class="form-group form-button">
+                                <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="signup-image">
+                        <figure><img src="{{url_for('static',filename = 'images/laspo.jpg')}}" alt="sing up image"></figure>
+                        <a href="{{ url_for('login') }}" class="signup-image-link">I am already registered</a>
+                    </div>
                 </div>
+            </div>
+        </section>
+        </div>
 
-            <div class="msg">{{ msg }}</div>
-            <input type="submit" value="Register">
-        </form>
-    </div>
-</body>
-
-</html>
+        </body>
