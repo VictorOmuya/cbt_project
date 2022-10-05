@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div style="padding: 0px;">
+<h2 style="color: rgb(14, 8, 1);">Admin/Lecturer's Page  <br>
+    <i style="font-size: 12px;">Enter Carefully the questions and options and the correct option.</i></h2>
+</div>
+
+ <div style="padding: 0px;">
+   <i style="font-size: 10px; color: green;">{{mess}}</i>
+    <form action="{{ url_for('admin') }}" method="POST">
+        <div style="padding: 10px;">
+        <textarea name="question" cols="90" rows="3" placeholder="Enter the question here..."
+            style="border-radius: 7px; font-size:15px;"></textarea>
+        </div>
+       
+       <div style="padding: 10px;">
+        <input type="text" name="optionA" placeholder="Enter option A" required style="width: 60%; font-size:12px; border-radius: 3px;"><br>
+       </div>
+       <div style="padding: 10px;">
+        <input type="text" name="optionB" placeholder="Enter option B" required style="width: 60%; font-size:12px; border-radius: 3px;"><br>
+       </div>
+        
+        <div style="padding: 10px;">
+            <input type="text" name="optionC" placeholder="Enter option C" required style="width: 60%; font-size:12px; border-radius: 3px;"><br>
+        </div>
+        <div style="padding: 10px;">
+            <input type="text" name="optionD" placeholder="Enter option D" required style="width: 60%; font-size:12px; border-radius: 3px;"><br>
+        </div>
+        
+        <div style="padding: 10px;">
+            <input type="text" name="answer" placeholder="Copy and paste the correct option here.." required style="width: 60%; font-size:12px; border-radius: 3px;"><br>
+           
+        </div>
+
+        <div style="padding: 10px;">
+            <input type="submit" name="submit" value="save" 
+            style="font-size:12px; width:50px; border-radius: 3px; background-color: green; color: white; border-color: green;">
+        </div>
+     
+    </form>
+</div>
+
+{% endblock %}

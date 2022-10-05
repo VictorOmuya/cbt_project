@@ -1,0 +1,4 @@
+C:/Users/HP/anaconda4/Scripts/activate
+conda activate C:\Users\HP\anaconda4
+
+background-color: #435165;

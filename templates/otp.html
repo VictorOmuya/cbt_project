@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>OTP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+</head>
+
+<body>
+    <div class="login">
+        <h1>OTP</h1>
+        <div class="links">
+            <a href="{{ url_for('otp_mess') }}" class="active">OTP</a>
+           
+        </div>
+        <form action="{{ url_for('otp_mess') }}" method="post">
+          
+            <label for="password">
+                <i class="fas fa-lock"></i>
+            </label>
+            <input type="text" name="otp" placeholder="enter OTP" id="password" maxlength ="6" required>
+            <div class="msg">{{ msg }}</div>
+            <input type="submit" value="Continue">
+        </form>
+    </div>
+</body>
+
+</html>
