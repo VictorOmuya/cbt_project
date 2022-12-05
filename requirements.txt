@@ -1,11 +1,11 @@
 absl-py==1.0.0
 aiofiles==0.8.0
-alabaster @ file:///home/ktietz/src/ci/alabaster_1611921544520/work
+alabaster 
 altgraph==0.17.2
-anaconda-client @ file:///C:/ci/anaconda-client_1635342725944/work
+anaconda-client 
 anaconda-navigator==2.1.1
-anaconda-project @ file:///tmp/build/80754af9/anaconda-project_1626085644852/work
-anyio @ file:///D:/bld/anyio_1641898277463/work/dist
+anaconda-project 
+anyio 
 appdirs==1.4.4
 argh==0.26.2
 argon2-cffi @ file:///C:/ci/argon2-cffi_1613037869401/work

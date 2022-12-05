@@ -1,4 +1,4 @@
-from tkinter.messagebox import QUESTION
+
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL, MySQLdb
 import MySQLdb.cursors
@@ -22,6 +22,7 @@ mysql = MySQL(app)
 @app.route('/admin', methods = ['GET', 'POST'])
 def admin():
     msg = ''
+    username = "Admin"
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
     if request.method == 'POST' and 'question' in request.form and 'optionA' in request.form and 'answer' in request.form:
@@ -39,11 +40,12 @@ def admin():
     elif request.method == 'POST':
         msg = 'Please fill entire field!'
         
-    return render_template('admin.html', mess = msg)
+    return render_template('admin.html', mess = msg, username = username)
 
 @app.route('/delete', methods=['POST', 'GET'])
 def delete():
     msg = ''
+    username = 'Admin'
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
     if request.method == 'POST' and 'number' in request.form:
@@ -55,7 +57,7 @@ def delete():
     elif request.method == 'POST':
         msg = 'Please enter a valid number!'
         
-    return render_template('deletequestion.html', mess = msg)
+    return render_template('deletequestion.html', mess = msg, username = username)
   
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -66,7 +68,7 @@ def login():
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(
-            'SELECT * FROM cbt WHERE username = %s AND password = %s', (const_username, password))
+            'SELECT * FROM account WHERE username = %s AND password = %s', (const_username, password))
         account = cursor.fetchone()
 
         if account:
@@ -76,7 +78,8 @@ def login():
             session['email'] = account['email']
             session['phone_no'] = account['phone_no']
             
-            return redirect(url_for('face'))
+            #return redirect(url_for('face'))
+            return redirect(url_for('exam'))
         else:
             msg = 'Incorrect username/password!'
 
@@ -118,24 +121,35 @@ def exam():
             id = session["id"] 
             for q in questions:
                 user_answer = request.form.getlist(q['question'])
-                if q['answer'] == user_answer[0]:
-                    score += 5
-                    print(score)
+                if len(user_answer) > 0:
+                    if q['answer'] == user_answer[0]:
+                        score += 5
+                        print(score)
+                    else:
+                        score += 0
                 else:
-                    score += 0
-            
-            cursor.execute("UPDATE cbt set `score` = %s WHERE id = %s", (score, id))
+                    score = 0
+                    print("score is 0")
+            cursor.execute("UPDATE account set `score` = %s WHERE id = %s", (score, id))
             mysql.connection.commit()
             
             score_message = "Your score : %s" %score 
-           
-            sms.send_sms(phone, score_message)
+            try:
+                sms.send_sms(phone, score_message)
+            except:
+                return redirect(url_for('error'))
+            
             return redirect(url_for('exam_success'))
     
         return render_template('exam.html', username = session['username'], questions = questions)
     return redirect(url_for('login'))
 
 
+
+@app.route('/error')
+def error():
+    return render_template('error.html')
+    
 
 @app.route('/exam_success', methods=['POST', 'GET'])
 def exam_success():
@@ -186,9 +200,10 @@ def register():
                 real_dir = file_dir+uploaded_file.filename
                 uploaded_file.save(real_dir)
                 cursor.execute(
-                    'INSERT INTO cbt VALUES (NULL, %s, %s, %s, %s, %s)', (username, password, email, phone_no, score))
+                    'INSERT INTO account VALUES (NULL, %s, %s, %s, %s, %s)', (username, password, email, phone_no, score))
                 mysql.connection.commit()
                 msg = 'You have successfully registered'
+                return redirect(url_for('login'))
     elif request.method == 'POST':
         msg = 'Please fill out the form!'
 
