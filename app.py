@@ -8,13 +8,13 @@ import sms
 import os
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("secret_key")
+app.secret_key = 'mykeys'
 
 
-app.config['MYSQL_HOST'] = os.environ.get("host")
+app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = os.environ.get("db")
+app.config['MYSQL_DB'] = 'cbt_data'
 
 mysql = MySQL(app)
     
@@ -110,20 +110,21 @@ def exam():
     if 'loggedin' in session:
         questions = ''
         score = 0
-       
+        que = []
+        
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM questions')
         questions = cursor.fetchall()
-      
         
         if request.method == 'POST':  
             phone = session['phone_no']
             id = session["id"] 
+            print(phone)
             for q in questions:
                 user_answer = request.form.getlist(q['question'])
                 if len(user_answer) > 0:
                     if q['answer'] == user_answer[0]:
-                        score += 5
+                        score += 4
                         print(score)
                     else:
                         score += 0
@@ -133,18 +134,19 @@ def exam():
             cursor.execute("UPDATE account set `score` = %s WHERE id = %s", (score, id))
             mysql.connection.commit()
             
-            score_message = "Your score : %s" %score 
-            try:
-                sms.send_sms(phone, score_message)
-            except:
-                return redirect(url_for('error'))
+            score_message = "Entrance_Exam_Score:%s" %score 
+            #try
+            sms.sending_sms(phone, score_message)
+            session.pop('loggedin', None)
+            session.pop('id', None)
+            session.pop('username', None)
+            #except:
+                #return redirect(url_for('error'))
             
             return redirect(url_for('exam_success'))
     
-        return render_template('exam.html', username = session['username'], questions = questions)
+        return render_template('exam.html', username = session['username'], questions = questions, que=que)
     return redirect(url_for('login'))
-
-
 
 @app.route('/error')
 def error():

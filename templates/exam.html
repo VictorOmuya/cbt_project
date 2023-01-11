@@ -12,8 +12,10 @@
 <form action="{{ url_for('exam') }}" method="post">
 
 <div style="background-color: #ffffff; width : 100%; border-radius: 10px;">
+    
     {% for q in questions %}
-        <p style="margin-left: 10px; font-size:12px;">{{ q.id }}. {{q.question}}</p>
+    <p hidden >{{que.append(q)}}</p>
+        <p style="margin-left: 10px; font-size:12px;">{{que.index(q)+1}}.  {{q.question}}</p>
             <div style="margin-left: 10px; font-size:12px;">
                 <input type="radio" name="{{ q.question }}" value="{{ q.optionA }}"> {{ q.optionA }}  </input><br>
                 <input type="radio" name="{{ q.question }}" value="{{ q.optionB }}"> {{ q.optionB }}  </input><br>
@@ -39,5 +41,5 @@ border: none; color: white; margin-bottom: 20px; font-size:15px; width:10%; padd
 
 
 {% block script %}
-<script src="{{ url_for('static', filename='js/jscr.js') }}"></script>
+<script src="{{ url_for('static', filename='js/newjs.js') }}"></script>
 {% endblock %}
